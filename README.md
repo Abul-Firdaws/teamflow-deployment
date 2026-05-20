@@ -25,21 +25,19 @@ The project was completed as part of the **TS Academy DevOps programme** and dem
 
 ## Architecture
 
-
 User
 ↓ HTTPS
 Amazon CloudFront (CDN + API Reverse Proxy)
-↓ /api/* ↓ /*
+↓ /api/*↓ /*
 EC2 (Flask Backend) S3 (React Frontend)
 ↓
 RDS PostgreSQL
 (Private — no public access)
 
-
 ### Services Used
 
 | Service | Purpose |
-|---|---|
+| --- | --- |
 | Amazon EC2 (Ubuntu 22.04) | Hosts Flask REST API backend |
 | Amazon RDS (PostgreSQL) | Managed private relational database |
 | Amazon S3 | Hosts static React production build |
@@ -51,6 +49,7 @@ RDS PostgreSQL
 ## Tech Stack
 
 ### Backend
+
 - Python 3.12
 - Flask 3.0
 - Flask-SQLAlchemy
@@ -60,12 +59,14 @@ RDS PostgreSQL
 - Gunicorn (recommended for production)
 
 ### Frontend
+
 - React 18
 - TypeScript
 - Vite
 - Tailwind CSS
 
 ### Database
+
 - PostgreSQL (Amazon RDS)
 
 ---
@@ -84,8 +85,8 @@ RDS PostgreSQL
 ## Live Deployment URLs
 
 | Component | URL |
-|---|---|
-| Frontend (CloudFront) | https://d1jq7sb61dnewr.cloudfront.net |
+| --- | --- |
+| Frontend (CloudFront) | <https://d1jq7sb61dnewr.cloudfront.net> |
 | Backend (EC2) | http://<EC2_PUBLIC_IP>:5000 |
 | Database (RDS) | Private (VPC-only access) |
 
@@ -95,31 +96,32 @@ RDS PostgreSQL
 
 ## Repository Structure
 
-
+```text
 teamflow-deployment/
-│
 ├── README.md
+├── LICENSE
+│
 ├── architecture/
-│ └── architecture-diagram.png
+│   └── architecture-diagram.png
 │
 ├── backend/
-│ ├── setup.sh
-│ └── run.py.patch
+│   ├── setup.sh
+│   └── run.py.patch
 │
 ├── frontend/
-│ ├── build-steps.md
-│ └── .env.production.example
+│   ├── build-steps.md
+│   └── .env.production.example
 │
 ├── infrastructure/
-│ ├── s3-bucket-policy.json
-│ └── security-groups.md
+│   ├── s3-bucket-policy.json
+│   └── security-groups.md
 │
 ├── docs/
-│ ├── deployment-guide.md
-│ └── troubleshooting.md
+│   ├── deployment-guide.md
+│   └── troubleshooting.md
 │
 └── screenshots/
-
+```
 
 ---
 
@@ -162,19 +164,9 @@ teamflow-deployment/
 ## Source Repositories
 
 | Component | Link |
-|---|---|
-| Backend | https://github.com/ts-a-devops/taskapp_backend |
-| Frontend | https://github.com/ts-a-devops/taskapp_frontend |
-
----
-
-## Author
-
-**Firdaws Saaka**  
-Assistant Water Safety Specialist
-DevOps Trainee at TS Academy
-Certified AWS Cloud Practitioner | Studying for AWS Solutions Architect Associate  
-
+| --- | --- |
+| Backend | <https://github.com/ts-a-devops/taskapp_backend> |
+| Frontend | <https://github.com/ts-a-devops/taskapp_frontend> |
 
 ---
 
