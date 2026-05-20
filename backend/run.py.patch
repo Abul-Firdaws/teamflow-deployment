@@ -1,0 +1,79 @@
+# Fix: load_dotenv() Missing from run.py
+
+## Problem
+
+The original `run.py` from the backend repository did not call `load_dotenv()`.
+
+The app was designed to be deployed using **Ansible**, which injects environment
+variables directly into the system environment. When deploying manually on EC2,
+the `.env` file is never loaded — causing `os.getenv()` to return `None` for all
+database variables and falling back to `localhost`.
+
+**Error encountered:**
+```
+psycopg2.OperationalError: connection to server at "localhost" (127.0.0.1),
+port 5432 failed: Connection refused
+```
+
+## Root Cause
+
+`app/__init__.py` reads environment variables using `os.getenv()`:
+```python
+db_host = os.getenv('DATABASE_HOST')
+db_name = os.getenv('DATABASE_NAME')
+db_user = os.getenv('DATABASE_USER')
+db_password = os.getenv('DATABASE_PASSWORD')
+```
+
+Without `load_dotenv()` being called first, these all return `None`,
+triggering the localhost fallback.
+
+## Fix Applied
+
+### Original run.py
+```python
+from app import create_app
+import os
+
+app = create_app()
+
+if __name__ == '__main__':
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
+```
+
+### Fixed run.py
+```python
+from dotenv import load_dotenv
+load_dotenv()                    # ← Added: must be called BEFORE create_app()
+
+from app import create_app
+import os
+
+app = create_app()
+
+if __name__ == '__main__':
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
+```
+
+## Key Lesson
+
+`load_dotenv()` must always be called **before** any code that reads
+environment variables. The order of execution matters.
+
+## Alternative Fix (No Code Change Required)
+
+Export variables directly into the shell session:
+```bash
+export DATABASE_HOST=your-rds-endpoint.rds.amazonaws.com
+export DATABASE_PORT=5432
+export DATABASE_NAME=taskapp
+export DATABASE_USER=postgres
+export DATABASE_PASSWORD=yourpassword
+export SECRET_KEY=your-secret-key
+python3 run.py
+```
+
+This bypasses the `.env` file entirely and works for testing.
+
